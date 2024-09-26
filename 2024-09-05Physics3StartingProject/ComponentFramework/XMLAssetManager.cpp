@@ -11,6 +11,8 @@
 #include "Sphere.h"
 #include "Cylinder.h"
 #include <QMath.h>
+#include "Capsule.h"
+#include "Box.h"
 
 XMLAssetManager::XMLAssetManager()
 {
@@ -121,11 +123,53 @@ void XMLAssetManager::AddCylinderShape(const tinyxml2::XMLElement* child)
 void XMLAssetManager::AddCapsuleShape(const tinyxml2::XMLElement* child)
 {
 	// TODO for assignment 1
+	if (std::string(child->FirstChildElement("Shape")->FirstChildElement()->Name()) == "Capsule") {
+		float radius = child->FirstChildElement("Shape")->FirstChildElement("Capsule")->FloatAttribute("radius");
+
+		Vec3 sphereCentrePosA;
+		sphereCentrePosA.x = child->FirstChildElement("Shape")->FirstChildElement("Capsule")->FloatAttribute("sphereCentrePosAx");
+		sphereCentrePosA.y = child->FirstChildElement("Shape")->FirstChildElement("Capsule")->FloatAttribute("sphereCentrePosAy");
+		sphereCentrePosA.z = child->FirstChildElement("Shape")->FirstChildElement("Capsule")->FloatAttribute("sphereCentrePosAz");
+
+		Vec3 sphereCentrePosB;
+		sphereCentrePosB.x = child->FirstChildElement("Shape")->FirstChildElement("Capsule")->FloatAttribute("sphereCentrePosBx");
+		sphereCentrePosB.y = child->FirstChildElement("Shape")->FirstChildElement("Capsule")->FloatAttribute("sphereCentrePosBy");
+		sphereCentrePosB.z = child->FirstChildElement("Shape")->FirstChildElement("Capsule")->FloatAttribute("sphereCentrePosBz");
+
+
+		GEOMETRY::Capsule capsule(radius, sphereCentrePosA, sphereCentrePosB);
+
+
+		AddComponent<ShapeComponent>(child->FirstChildElement("Shape")->Attribute("name"), nullptr, capsule);
+	}
 }
 
 void XMLAssetManager::AddBoxShape(const tinyxml2::XMLElement* child)
 {
-	// TODO for assignment 1
+	if (std::string(child->FirstChildElement("Shape")->FirstChildElement()->Name()) == "Box") {
+
+		Vec3 centre;
+		centre.x = child->FirstChildElement("Shape")->FirstChildElement("Box")->FloatAttribute("centreX");
+		centre.y = child->FirstChildElement("Shape")->FirstChildElement("Box")->FloatAttribute("centreY");
+		centre.z = child->FirstChildElement("Shape")->FirstChildElement("Box")->FloatAttribute("centreZ");
+
+		Vec3 halfExtents;
+		halfExtents.x = child->FirstChildElement("Shape")->FirstChildElement("Box")->FloatAttribute("halfExtentsX");
+		halfExtents.y = child->FirstChildElement("Shape")->FirstChildElement("Box")->FloatAttribute("halfExtentsY");
+		halfExtents.z = child->FirstChildElement("Shape")->FirstChildElement("Box")->FloatAttribute("halfExtentsZ");
+
+		float angleDeg = child->FirstChildElement("Shape")->FirstChildElement("Box")->FloatAttribute("angleDegrees");
+
+		Vec3 axis;
+		axis.x = child->FirstChildElement("Shape")->FirstChildElement("Box")->FloatAttribute("axisX");
+		axis.y = child->FirstChildElement("Shape")->FirstChildElement("Box")->FloatAttribute("axisY");
+		axis.z = child->FirstChildElement("Shape")->FirstChildElement("Box")->FloatAttribute("axisZ");
+
+		Quaternion orientation = QMath::angleAxisRotation(angleDeg, axis);
+		GEOMETRY::Box box(centre, halfExtents, orientation);
+		
+		AddComponent<ShaderComponent>(child->FirstChildElement("Shape")->Attribute("name"), nullptr, box);
+	}
 }
 
 void XMLAssetManager::AddMaterial(const tinyxml2::XMLElement* child)

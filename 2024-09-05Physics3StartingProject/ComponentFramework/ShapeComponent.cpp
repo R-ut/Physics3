@@ -18,6 +18,18 @@ ShapeComponent::ShapeComponent(Component* parent_, Cylinder cylinder_) :Componen
 // TODO for Assignment 1:
 // The other constructors that take in Capsule, or Box 
 
+ShapeComponent::ShapeComponent(Component* parent_, Capsule capsule_) :Component(parent_) {
+	shapeType = ShapeType::capsule;
+	// We are sure at this point that shape should be a sphere
+	// So we can safely make a shared pointer of type sphere with the constructor Sphere(MATH::Vec3 centre, float r)
+	shape = std::make_shared<Capsule>(capsule_.r, capsule_.sphereCentrePosA, capsule_.sphereCentrePosB);
+
+}
+ShapeComponent::ShapeComponent(Component* parent_, Box box_) :Component(parent_)
+{
+	shapeType = ShapeType::box;
+	shape = std::make_shared<Box>(box_.centre, box_.halfExtents, box_.orientation);
+}
 ShapeComponent::~ShapeComponent()
 {
 }
