@@ -23,6 +23,10 @@ namespace GEOMETRY {
             set(r_, sphereCentrePosA_, sphereCentrePosB_);
         }
 
+        //copy constructor
+        Capsule(const Capsule& c) {
+            set(c.r, c.sphereCentrePosA, c.sphereCentrePosB);
+        }
         void generateVerticesAndNormals() override;
 
 

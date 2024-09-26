@@ -29,11 +29,14 @@ class ShapeComponent : public Component {
 	ShapeComponent& operator = (ShapeComponent&&) = delete;
 
 public:
-	ShapeComponent(Component*, GEOMETRY::Sphere);
+
+	//chabged to pass by reference rather than by value
+	//saved 76 bytes! Noice! 
+	ShapeComponent(Component*, const GEOMETRY::Sphere&);
 	// TODO for Assignment 1:
-	ShapeComponent(Component*, GEOMETRY::Cylinder);
-	ShapeComponent(Component*, GEOMETRY::Capsule);  
-	ShapeComponent(Component*, GEOMETRY::Box); 
+	ShapeComponent(Component*, const GEOMETRY::Cylinder&);
+	ShapeComponent(Component*,const  GEOMETRY::Capsule&);  
+	ShapeComponent(Component*, const GEOMETRY::Box&); 
 
 	// What shape do we have? Well it will be either a sphere, cylinder, capsule, or box
 	// Use the power of polymorphism to figure it out

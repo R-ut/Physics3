@@ -84,6 +84,40 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 	case SDL_MOUSEBUTTONDOWN:
 		if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
 			Vec3 mouseCoords(static_cast<float>(sdlEvent.button.x), static_cast<float>(sdlEvent.button.y), 0.0f);
+			mouseCoords.print("Pixel space:");
+
+			Matrix4 ndcToPixelSpace = MMath::viewportNDC(1280, 720);
+			Matrix4 pixelToNdc = MMath::inverse(ndcToPixelSpace);
+
+			//Scott meshes around with w component of vec4 for perpestive
+			Vec4 mouseCoordsNDC = pixelToNdc * mouseCoords;
+			//Put mouse on front of the ndc plane
+			mouseCoordsNDC.z = -1.0f;
+			mouseCoordsNDC.print("NDC space:");
+
+			Matrix4 cameraToNdc = camera->GetProjectionMatrix();
+			Matrix4 ndcToCameraSpace = MMath::inverse(cameraToNdc);
+
+			Vec4 mouseCoordsCameraSpace = ndcToCameraSpace * mouseCoordsNDC;
+			mouseCoordsCameraSpace.print("Camera space:");
+			//the w coordine gets messed up by the projection matrix
+			//Song ho has us covered here:
+			//https://www.songho.ca/math/homogeneous/homogeneous.html
+
+			//we live in 3d
+			//so we dide out the w component such that it is 1
+			mouseCoordsCameraSpace = VMath::perspectiveDivide(mouseCoordsCameraSpace);
+			mouseCoordsCameraSpace.print("Mouse space with w divided:"); //w is now 1
+
+			Matrix4 worldToCameraSpace = camera->GetViewMatrix();
+			Matrix4 cameraToWorldSpace = MMath::inverse(worldToCameraSpace);
+			Vec4 mouseCoordsWorldSpace = cameraToWorldSpace * mouseCoordsCameraSpace;
+			mouseCoordsWorldSpace.print("World space:");
+
+			Vec3 rayStartWorldSpace = mouseCoordsWorldSpace;
+			Vec3 rayDirWorldSpace = mouseCoordsWorldSpace - camera->GetComponent<TransformComponent>()->pos;
+			rayDirWorldSpace = VMath::normalize(rayDirWorldSpace);
+
 			// TODO for Assignment 2: 
 			// Get a ray pointing into the world, We have the x, y pixel coordinates
 			// Need to convert this into world space to build our ray

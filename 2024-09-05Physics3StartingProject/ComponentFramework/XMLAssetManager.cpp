@@ -168,7 +168,7 @@ void XMLAssetManager::AddBoxShape(const tinyxml2::XMLElement* child)
 		Quaternion orientation = QMath::angleAxisRotation(angleDeg, axis);
 		GEOMETRY::Box box(centre, halfExtents, orientation);
 		
-		AddComponent<ShaderComponent>(child->FirstChildElement("Shape")->Attribute("name"), nullptr, box);
+		AddComponent<ShapeComponent>(child->FirstChildElement("Shape")->Attribute("name"), nullptr, box);
 	}
 }
 

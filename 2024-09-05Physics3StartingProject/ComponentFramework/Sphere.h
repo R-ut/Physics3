@@ -30,7 +30,7 @@ namespace GEOMETRY {
 		Sphere(MATH::Vec3 centre, float r) {
 			set(centre.x, centre.y, centre.z, r);
 		}
-
+		//copy constructor
 		Sphere(const Sphere& s) {
 			set(s.x, s.y, s.z, s.r);
 		}

@@ -26,6 +26,10 @@ namespace GEOMETRY {
 		Cylinder() {
 			set(1.0f, MATH::Vec3(0, 0, 0), MATH::Vec3(0, 1, 0));
 		}
+		//copy co nstructor
+		Cylinder(const Cylinder& c) {
+			set(c.r, c.capCentrePosA, c.capCentrePosB);
+		}
 
 		Cylinder(float r_, MATH::Vec3 capCentrePosA_, MATH::Vec3 capCentrePosB_) {
 			set(r_, capCentrePosA_, capCentrePosB_);

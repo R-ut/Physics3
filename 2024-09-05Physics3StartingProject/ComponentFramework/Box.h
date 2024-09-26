@@ -26,6 +26,11 @@ namespace GEOMETRY {
 		Box(MATH::Vec3 centre_, MATH::Vec3 halfExtents_, MATH::Quaternion orientation_) {
 			set(centre_, halfExtents_, orientation_);
 		}
+
+		//Copy constructor
+		Box(const Box& box) {
+			set(box.centre, box.halfExtents, box.orientation);
+		}
 		void generateVerticesAndNormals() override;
 	};
 
