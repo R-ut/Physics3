@@ -4,6 +4,7 @@
 #include "Shape.h"
 #include <Vector.h>
 #include <vector>
+#include <VMath.h>
 
 namespace GEOMETRY {
 	struct Cylinder : public Shape {
