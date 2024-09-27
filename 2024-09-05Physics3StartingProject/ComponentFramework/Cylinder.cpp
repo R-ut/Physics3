@@ -7,7 +7,7 @@ void GEOMETRY::Cylinder::generateVerticesAndNormals() {
 	float noOfCirlces = 99;
 	const float deltaTheta = 5.0f;
 
-	for (int i = -1; i < noOfCirlces; i++) {
+	for (int i = 0; i < noOfCirlces; i++) {
 		for (float thetaDeg = 0.0f; thetaDeg <= 360.0f; thetaDeg += deltaTheta) {
 			// Build a ring
 			MATH::Vec3 circle(r * cos(thetaDeg * DEGREES_TO_RADIANS), r * sin(thetaDeg * DEGREES_TO_RADIANS), 0.0f);

@@ -13,7 +13,7 @@
 				<!--TODO - double check this matches Scott's checkpiece model-->
 				<Cylinder radius ="4.0"
 						  capCentrePosAx="0.0" capCentrePosAy="0.0" capCentrePosAz="0.0"
-						  capCentrePosBx="0.0" capCentrePosBy="0.0" capCentrePosBz="2.0"
+						  capCentrePosBx="0.0" capCentrePosBy="0.0" capCentrePosBz="2.53"
 				/>
 			</Shape>
 		</Mesh>
@@ -21,9 +21,9 @@
 		<Mesh name="MarioMesh" filename="meshes/Mario.obj">
 			<Shape name="MarioCapsuleShape">
 				<!--TODO - tighten this up for the mario model -->
-				<Capsule radius ="0.8"
-						  sphereCentrePosAx="0.0" sphereCentrePosAy="0.0" sphereCentrePosAz="0.0"
-						  sphereCentrePosBx="0.0" sphereCentrePosBy="0.95" sphereCentrePosBz="0.0"
+				<Capsule radius ="0.5"
+						  sphereCentrePosAx="0.0" sphereCentrePosAy="-1.05" sphereCentrePosAz="0.0"
+						  sphereCentrePosBx="0.0" sphereCentrePosBy="-0.05" sphereCentrePosBz="0.0"
 				/>
 			</Shape>
 		</Mesh>
