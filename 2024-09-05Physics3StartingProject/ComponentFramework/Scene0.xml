@@ -4,7 +4,7 @@
 		<!--Setting up meshes and shapes-->
 		<Mesh name="SkullMesh" filename="meshes/Skull.obj">
 			<Shape name ="SkullSphereShape">
-				<Sphere radius ="1.5" centreX="0.0" centreY="0.0" centreZ="0.0"/>
+				<Sphere radius ="2" centreX="-1.2" centreY="0.0" centreZ="0.0"/>
 			</Shape>
 		</Mesh>
 

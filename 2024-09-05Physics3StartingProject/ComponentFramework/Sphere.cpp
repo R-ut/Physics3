@@ -8,9 +8,9 @@ void Sphere::generateVerticesAndNormals()
 {
 	// We need to fill the vertices and normals arrays with the correct data for a sphere
 	// deltaTheta governs how many points per ring. Try messing with it
-	const float deltaTheta = 5.0f;
+	const float deltaTheta = 3.0f;
 	// deltaPhi governs how many rings there are in total. Try messing with it
-	const float deltaPhi = 45.0f;
+	const float deltaPhi = 10.0f;
 	for (float thetaDeg = 0.0f; thetaDeg <= 360.0f; thetaDeg += deltaTheta)
 	{
 		// Build a ring
