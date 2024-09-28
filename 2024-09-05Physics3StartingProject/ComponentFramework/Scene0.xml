@@ -31,10 +31,10 @@
 		<Mesh name="PlaneMesh" filename="meshes/Plane.obj">
 			<Shape name="CheckerboardPlaneShape">
 				<!--Just random numbers for now here-->
-				<Box centreX="78.0" centreY="-2.0" centreZ="5.0"
-					 halfExtentsX="1.0" halfExtentsY="2.0" halfExtentsZ="3.0"
-					 angleDegrees="45.0"
-					 axisX="0.0" axisY="1.0" axisZ="0.0"
+				<Box centreX="0" centreY="0.0" centreZ="-0.2"
+					 halfExtentsX="5.1" halfExtentsY="5.1" halfExtentsZ="0.1"
+					 angleDegrees="0.0"
+					 axisX="1.0" axisY="0.0" axisZ="0.0"
 				  />
 
 			</Shape>
@@ -46,7 +46,7 @@
 				<Box centreX="0.0" centreY="0.0" centreZ="0.0"
 					 halfExtentsX="1.0" halfExtentsY="1.0" halfExtentsZ="1.0"
 					 angleDegrees="0.0"
-					 axisX="0.0" axisY="1.0" axisZ="0.0"
+					 axisX="1.0" axisY="0.0" axisZ="0.0"
 				  />
 			</Shape>
 		</Mesh>
