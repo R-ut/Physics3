@@ -12,7 +12,7 @@ void GEOMETRY::Cylinder::generateVerticesAndNormals() {
 			// Build a ring
 			MATH::Vec3 circle(r * cos(thetaDeg * DEGREES_TO_RADIANS), r * sin(thetaDeg * DEGREES_TO_RADIANS), 0.0f);
 			vertices.push_back(circle + ((dir * i*distance)/(noOfCirlces)));
-			normals.push_back(circle);
+			normals.push_back(VMath::normalize(circle));
 		}
 	}
 
