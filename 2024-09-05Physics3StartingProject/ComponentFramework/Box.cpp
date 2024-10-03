@@ -1,6 +1,7 @@
 #include "Box.h"
 using namespace MATH;
-void GEOMETRY::Box::generateVerticesAndNormals()
+using namespace GEOMETRY;
+void Box::generateVerticesAndNormals()
 {
 	// Umer will put a random triangle in for now
 	Vec3 topRightFront = centre + Vec3(halfExtents.x, halfExtents.y, halfExtents.z);
@@ -142,4 +143,9 @@ void GEOMETRY::Box::generateVerticesAndNormals()
 	normals.push_back(Vec3(0, -1.0f, 0));
 
 	StoreMeshData(GL_TRIANGLES);
+}
+
+RayIntersectionInfo Box::rayIntersectionInfo(const Ray& ray) const
+{
+	return RayIntersectionInfo();
 }

@@ -4,7 +4,7 @@
 		<!--Setting up meshes and shapes-->
 		<Mesh name="SkullMesh" filename="meshes/Skull.obj">
 			<Shape name ="SkullSphereShape">
-				<Sphere radius ="2" centreX="-1.2" centreY="0.0" centreZ="0.0"/>
+				<Sphere radius ="2" centreX="0" centreY="0.0" centreZ="0.0"/>
 			</Shape>
 		</Mesh>
 
@@ -22,8 +22,8 @@
 			<Shape name="MarioCapsuleShape">
 				<!--TODO - tighten this up for the mario model -->
 				<Capsule radius ="0.5"
-						  sphereCentrePosAx="0.0" sphereCentrePosAy="-1.05" sphereCentrePosAz="0.0"
-						  sphereCentrePosBx="0.0" sphereCentrePosBy="-0.05" sphereCentrePosBz="0.0"
+						  sphereCentrePosAx="0.0" sphereCentrePosAy="1.5" sphereCentrePosAz="0.0"
+						  sphereCentrePosBx="0.0" sphereCentrePosBy="-1.5" sphereCentrePosBz="0.0"
 				/>
 			</Shape>
 		</Mesh>
@@ -135,7 +135,7 @@
 		</Camera>
 
 		<Light lightname="Light1" parent="none" lightstyle="DirectionLight"
-			   posx="0.0" posy="0.0" posz="-10.0"
+			   posx="0.0" posy="10.0" posz="-10.0"
 			   red="1.0" green="1.0" blue="1.0" alpha="0.0"
 			   intensity="1.0"
 			   falloffx="0.0" falloffy="0.0" falloffz="0.0"/>

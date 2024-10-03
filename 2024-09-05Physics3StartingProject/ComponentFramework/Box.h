@@ -32,6 +32,7 @@ namespace GEOMETRY {
 			set(box.centre, box.halfExtents, box.orientation);
 		}
 		void generateVerticesAndNormals() override;
+		RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
 	};
 
 }

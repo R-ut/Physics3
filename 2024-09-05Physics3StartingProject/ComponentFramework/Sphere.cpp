@@ -4,6 +4,13 @@
 using namespace MATH;
 using namespace GEOMETRY;
 
+
+
+RayIntersectionInfo Sphere::rayIntersectionInfo(const Ray& ray) const
+{
+	return RayIntersectionInfo();
+}
+
 void Sphere::generateVerticesAndNormals()
 {
 	// We need to fill the vertices and normals arrays with the correct data for a sphere
@@ -20,7 +27,7 @@ void Sphere::generateVerticesAndNormals()
 			Matrix3 rotationMatrix = MMath::rotate(deltaPhi, Vec3(0.0f, 1.0f, 0.0f));
 			circle = rotationMatrix * circle;
 			// Push the circle point to our vertices array
-			vertices.push_back(circle);
+			vertices.push_back(circle + Vec3(x, y, z));
 			// The normal of a sphere points outwards from the center position Vec3(x, y, z)
 			normals.push_back(circle - Vec3(x, y, z));
 		}

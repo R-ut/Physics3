@@ -29,7 +29,7 @@ namespace GEOMETRY {
         }
         void generateVerticesAndNormals() override;
 
-
+        RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
 };
 }
 #endif
