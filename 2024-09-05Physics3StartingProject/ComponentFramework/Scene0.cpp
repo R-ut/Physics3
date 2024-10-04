@@ -13,6 +13,7 @@
 #include "MeshComponent.h"
 #include "ShapeComponent.h"
 
+
 bool Scene0::OnCreate()
 {
 	XMLAssetManager assetManager;

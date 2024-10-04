@@ -1,5 +1,7 @@
 #include "Sphere.h"
 #include <MMath.h>
+#include <VMath.h>
+#include "QuadraticSolve.h"
 
 using namespace MATH;
 using namespace GEOMETRY;
@@ -8,7 +10,33 @@ using namespace GEOMETRY;
 
 RayIntersectionInfo Sphere::rayIntersectionInfo(const Ray& ray) const
 {
-	return RayIntersectionInfo();
+	//TODO
+	//Solve the big equation Umer had on sphere
+	Vec3 D = ray.dir;
+	Vec3 S = ray.start;
+	Vec3 C = Vec3(x, y, z);
+
+	float a = VMath::dot(D, D);
+	float b = 2 * (VMath::dot(S - C,D));
+	float c = VMath::dot(S - C,S - C)  - r * r;
+
+	QuadraticSolve soln = solveQuadratic(a, b, c);
+	
+	
+	RayIntersectionInfo result; 
+	//based on no of soln result.isIntersected is set to true
+	//result.t would be the smallest soln
+	result.intersectionPoint = ray.currentPosition(result.t);
+
+	if (soln.numSolutions == NumSolutions::zero)
+	{
+		result.isIntersected = false;
+	}
+	else {
+		result.isIntersected = true;
+	}
+
+	return result;
 }
 
 void Sphere::generateVerticesAndNormals()
