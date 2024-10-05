@@ -7,7 +7,6 @@ using namespace MATH;
 using namespace GEOMETRY;
 
 
-
 RayIntersectionInfo Sphere::rayIntersectionInfo(const Ray& ray) const
 {
 	//TODO
