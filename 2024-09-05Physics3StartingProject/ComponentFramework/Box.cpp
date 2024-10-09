@@ -3,6 +3,7 @@ using namespace MATH;
 using namespace GEOMETRY;
 void Box::generateVerticesAndNormals()
 {
+	//create triangles for the box with the half extents and the centre.
 	// Umer will put a random triangle in for now
 	Vec3 topRightFront = centre + Vec3(halfExtents.x, halfExtents.y, halfExtents.z);
 	topRightFront = QMath::rotate(topRightFront, orientation);

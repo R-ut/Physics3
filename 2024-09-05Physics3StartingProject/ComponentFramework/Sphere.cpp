@@ -58,6 +58,7 @@ void Sphere::generateVerticesAndNormals()
 			// The normal of a sphere points outwards from the center position Vec3(x, y, z)
 			normals.push_back(circle - Vec3(x, y, z));
 		}
+
 	}
 	// Once we are all done filling the vertices and normals, use the base class method to store the data in the GPU
 	StoreMeshData(GL_POINTS);

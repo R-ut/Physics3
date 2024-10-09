@@ -13,6 +13,12 @@ void Capsule::generateVerticesAndNormals() {
 	Vec3 dir = VMath::normalize(sphereCentrePosB - sphereCentrePosA);
 	float noOfCirlces = 25;
 
+	//Capsule is nothing but 2 spheres with added centre position of the top and bottom of cylinder.
+	//And a cylinder. 
+
+
+
+
 	//Sphere A
 	
 	for (float thetaDeg = 0.0f; thetaDeg <= 360.0f; thetaDeg += deltaTheta) {

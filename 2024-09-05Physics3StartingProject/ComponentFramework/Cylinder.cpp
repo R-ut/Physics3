@@ -16,7 +16,10 @@ void Cylinder::generateVerticesAndNormals() {
 		for (float thetaDeg = 0.0f; thetaDeg <= 360.0f; thetaDeg += deltaTheta) {
 			// Build a ring
 			MATH::Vec3 circle(r * cos(thetaDeg * DEGREES_TO_RADIANS), r * sin(thetaDeg * DEGREES_TO_RADIANS), 0.0f);
+			//create one circle and move it up in the direction of the normal between the two caps.
+			//(distance/no of circle) give me the distance between each circle and I just increment it. 
 			vertices.push_back(circle + ((dir * i*distance)/(noOfCirlces)));
+			//as each point acts as a circle(cylinder formed by stack of circle). I normalise circle to get it's normal. 
 			normals.push_back(VMath::normalize(circle));
 		}
 	}
