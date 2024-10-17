@@ -23,6 +23,7 @@ RayIntersectionInfo Sphere::rayIntersectionInfo(const Ray& ray) const
 	
 	
 	RayIntersectionInfo result; 
+	result.isIntersected = true;
 	//based on no of soln result.isIntersected is set to true
 	//result.t would be the smallest soln
 	result.intersectionPoint = ray.currentPosition(result.t);

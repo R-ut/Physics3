@@ -12,7 +12,7 @@
 #include "ShaderComponent.h"
 #include "MeshComponent.h"
 #include "ShapeComponent.h"
-
+#include "Ray.h"
 
 bool Scene0::OnCreate()
 {
@@ -85,7 +85,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 	case SDL_MOUSEBUTTONDOWN:
 		if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
 			Vec3 mouseCoords(static_cast<float>(sdlEvent.button.x), static_cast<float>(sdlEvent.button.y), 0.0f);
-			mouseCoords.print("Pixel space:");
+			//mouseCoords.print("Pixel space:");
 
 			Matrix4 ndcToPixelSpace = MMath::viewportNDC(1280, 720);
 			Matrix4 pixelToNdc = MMath::inverse(ndcToPixelSpace);
@@ -94,13 +94,13 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 			Vec4 mouseCoordsNDC = pixelToNdc * mouseCoords;
 			//Put mouse on front of the ndc plane
 			mouseCoordsNDC.z = -1.0f;
-			mouseCoordsNDC.print("NDC space:");
+			//mouseCoordsNDC.print("NDC space:");
 
 			Matrix4 cameraToNdc = camera->GetProjectionMatrix();
 			Matrix4 ndcToCameraSpace = MMath::inverse(cameraToNdc);
 
 			Vec4 mouseCoordsCameraSpace = ndcToCameraSpace * mouseCoordsNDC;
-			mouseCoordsCameraSpace.print("Camera space:");
+			//mouseCoordsCameraSpace.print("Camera space:");
 			//the w coordine gets messed up by the projection matrix
 			//Song ho has us covered here:
 			//https://www.songho.ca/math/homogeneous/homogeneous.html
@@ -108,37 +108,73 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 			//we live in 3d
 			//so we dide out the w component such that it is 1
 			mouseCoordsCameraSpace = VMath::perspectiveDivide(mouseCoordsCameraSpace);
-			mouseCoordsCameraSpace.print("Mouse space with w divided:"); //w is now 1
+			//mouseCoordsCameraSpace.print("Mouse space with w divided:"); //w is now 1
 
 			Matrix4 worldToCameraSpace = camera->GetViewMatrix();
 			Matrix4 cameraToWorldSpace = MMath::inverse(worldToCameraSpace);
 			Vec4 mouseCoordsWorldSpace = cameraToWorldSpace * mouseCoordsCameraSpace;
-			mouseCoordsWorldSpace.print("World space:");
+			//mouseCoordsWorldSpace.print("World space:");
 
 			Vec3 rayStartWorldSpace = mouseCoordsWorldSpace;
 			Vec3 rayDirWorldSpace = mouseCoordsWorldSpace - camera->GetComponent<TransformComponent>()->pos;
 			rayDirWorldSpace = VMath::normalize(rayDirWorldSpace);
 
-			// TODO for Assignment 2: 
-			// Get a ray pointing into the world, We have the x, y pixel coordinates
-			// Need to convert this into world space to build our ray
 
-			// Loop through all the actors and check if the ray has collided with them
-			// Pick the one with the smallest positive t value
+
+
+			GEOMETRY::Ray rayWorldSpace(rayStartWorldSpace, rayDirWorldSpace);
+
 			for (auto it = actors.begin(); it != actors.end(); ++it) {
 				Ref<Actor> actor = std::dynamic_pointer_cast<Actor>(it->second);
 				Ref<TransformComponent> transformComponent = actor->GetComponent <TransformComponent>();
 				Ref<ShapeComponent> shapeComponent = actor->GetComponent <ShapeComponent>();
 				// TODO for Assignment 2: 
-				// Transform the ray into the local space of the object and check if a collision occured
+				// Transform the ray into the local space (ie Paul Neale space) of the object and check if a collision occured
+				// Lets do just spheres for now to help us debug
+				if (shapeComponent->shapeType == ShapeType::sphere) {
+					Matrix4 paulNealeToWorldSpace = transformComponent->GetTransformMatrix();
+					Matrix4 worldToPaulNealeSpace = MMath::inverse(paulNealeToWorldSpace);
+					// Transform the start of the ray
+					Vec3 rayStartPaulNealeSpace = worldToPaulNealeSpace * rayWorldSpace.start;
+					// Transform the direction of the ray
+					// Be careful, we don't want to translate the direction. 
+					// Only rotate using quaternion
+					Quaternion paulNealeToWorldSpaceRotation = transformComponent->GetOrientation();
+					Quaternion worlToPaulNealeSpaceRotation = QMath::conjugate(paulNealeToWorldSpaceRotation);
+					Vec3 rayDirPaulNealeSpace = QMath::rotate(rayWorldSpace.dir, worlToPaulNealeSpaceRotation);
+					GEOMETRY::Ray rayPaulNealeSpace(rayStartPaulNealeSpace, rayDirPaulNealeSpace);
+					// Shoot the ray at the sphere
+					rayInfo = shapeComponent->shape->rayIntersectionInfo(rayPaulNealeSpace);
+					if (rayInfo.isIntersected) {
+						std::cout << "You picked: " << it->first << '\n';
+						pickedActor = actor; // make a member variable called pickedActor. Will come in handy later…
+						haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
+					}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				}
 			}
+			break;
 		}
-		break;
 
 	default:
 		break;
-	}
-
+		}
 }
 
 void Scene0::Update(const float deltaTime)
