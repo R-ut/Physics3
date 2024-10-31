@@ -5,6 +5,7 @@
 #include <Vector.h>
 #include <vector>
 #include <VMath.h>
+#include "QuadraticSolve.h"
 
 namespace GEOMETRY {
 	struct Cylinder : public Shape {

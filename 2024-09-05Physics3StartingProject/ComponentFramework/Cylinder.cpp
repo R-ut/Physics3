@@ -3,7 +3,48 @@ using namespace MATH;
 using namespace GEOMETRY;
 RayIntersectionInfo Cylinder::rayIntersectionInfo(const Ray& ray) const
 {
-	return RayIntersectionInfo();
+	Vec3 D = ray.dir;
+	float DSquared = VMath::dot(D, D);
+	Vec3 AB = capCentrePosB - capCentrePosA;
+	Vec3 ABnormalized = VMath::normalize(AB);
+	Vec3 AS = ray.start - capCentrePosA;
+	float DDotAB = VMath::dot(D, ABnormalized);
+	float DDotAS = VMath::dot(D, AS);
+	float ASDotAB = VMath::dot(AS, ABnormalized);
+	float ASSquared = VMath::dot(AS, AS);
+
+	float a = DSquared - (DDotAB * DDotAB);
+	float b = 2.0f * (DDotAS - (DDotAB * ASDotAB));
+	float c = ASSquared - (ASDotAB*ASDotAB) - (r * r);
+
+	QuadraticSolve soln = solveQuadratic(a, b, c);
+
+	RayIntersectionInfo result;
+	// If there are no solutions, there is no intersection with the cylinder
+	if (soln.numSolutions == NumSolutions::zero) {
+		return result;  // Return the default false result (no intersection)
+	}
+
+	// If there is one solution, the ray grazes the cylinder
+	if (soln.numSolutions == NumSolutions::one) {
+		result.isIntersected = true;
+		result.t = soln.firstSolution;  // Return the intersection info with one solution
+	}
+
+	// If there are two solutions, choose the smallest positive one (the nearest intersection point)
+	if (soln.numSolutions == NumSolutions::two) {
+		// Assuming the first solution is the nearest intersection
+		result.isIntersected = true;
+		result.t = soln.firstSolution < soln.secondSolution ? soln.firstSolution : soln.secondSolution;
+
+		// Compute the intersection point using the ray equation
+		
+	}
+	result.intersectionPoint = ray.currentPosition(result.t);
+	// In future, you may want to handle cylinder caps if required.
+	// The current code assumes an infinitely long cylinder.
+
+	return result;
 }
 
 void Cylinder::generateVerticesAndNormals() {

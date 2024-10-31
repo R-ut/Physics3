@@ -150,23 +150,26 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						pickedActor = actor; // make a member variable called pickedActor. Will come in handy later…
 						haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
 					}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+				}
+				if (shapeComponent->shapeType == ShapeType::cylinder) {
+					Matrix4 paulNealeToWorldSpace = transformComponent->GetTransformMatrix();
+					Matrix4 worldToPaulNealeSpace = MMath::inverse(paulNealeToWorldSpace);
+					// Transform the start of the ray
+					Vec3 rayStartPaulNealeSpace = worldToPaulNealeSpace * rayWorldSpace.start;
+					// Transform the direction of the ray
+					// Be careful, we don't want to translate the direction. 
+					// Only rotate using quaternion
+					Quaternion paulNealeToWorldSpaceRotation = transformComponent->GetOrientation();
+					Quaternion worlToPaulNealeSpaceRotation = QMath::conjugate(paulNealeToWorldSpaceRotation);
+					Vec3 rayDirPaulNealeSpace = QMath::rotate(rayWorldSpace.dir, worlToPaulNealeSpaceRotation);
+					GEOMETRY::Ray rayPaulNealeSpace(rayStartPaulNealeSpace, rayDirPaulNealeSpace);
+					// Shoot the ray at the sphere
+					rayInfo = shapeComponent->shape->rayIntersectionInfo(rayPaulNealeSpace);
+					if (rayInfo.isIntersected) {
+						std::cout << "You picked: " << it->first << '\n';
+						pickedActor = actor; // make a member variable called pickedActor. Will come in handy later…
+						haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
+					}
 				}
 			}
 			break;
