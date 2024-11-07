@@ -1,6 +1,6 @@
-Thu Oct 31 11:12:58 2024
+Thu Nov  7 15:02:02 2024
 [INFO]: Starting the SceneManager
-[INFO]: OpenGL version: 4.6.0 NVIDIA 565.90
+[INFO]: OpenGL version: 4.6.0 NVIDIA 566.03
 [INFO]: Graphics card vendor NVIDIA Corporation
 [INFO]: Graphics card name NVIDIA GeForce RTX 4060 Laptop GPU/PCIe/SSE2
 [INFO]: GLSL Version 4.60 NVIDIA
@@ -12,12 +12,3 @@ Thu Oct 31 11:12:58 2024
 "projection" loc:-1
 "view" loc:-1
 
-[INFO]: Deleting assets for Actor/Components: 
-[INFO]: Deleting assets for Actor/Components: 
-[INFO]: Deleting assets for Actor/Components: 
-[INFO]: Deleting assets for Actor/Components: 
-[INFO]: Deleting assets for Actor/Components: 
-[INFO]: Deleting assets for Actor/Components: 
-[INFO]: Deleting assets for Actor/Components: 
-[INFO]: Deleting assets for Actor/Components: 
-[INFO]: Deleting the SceneManager

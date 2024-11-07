@@ -6,6 +6,16 @@
 #include <QMath.h>
 
 namespace GEOMETRY {
+
+	struct slab {
+		// REFERENCE: Ch. 4 Real Time Collision Detection by Ericson
+// This is called a Kay-Kajiya Slab volume
+// Region R = { (x, y, z) | distNear <= a*x + b*y + c*z <= distFar }
+		MATH::Vec3 normal;
+		float distNear; // Signed distance from origin for near plane
+		float distFar; // Signed distance from origin for far plane
+
+	};
 	struct Box : public Shape
 	{
 		MATH::Vec3 centre;

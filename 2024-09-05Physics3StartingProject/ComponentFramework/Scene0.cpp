@@ -131,7 +131,11 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 				// TODO for Assignment 2: 
 				// Transform the ray into the local space (ie Paul Neale space) of the object and check if a collision occured
 				// Lets do just spheres for now to help us debug
-				if (shapeComponent->shapeType == ShapeType::sphere) {
+				if (shapeComponent->shapeType == ShapeType::sphere || shapeComponent->shapeType == ShapeType::cylinder 
+					|| shapeComponent->shapeType == ShapeType::capsule || shapeComponent->shapeType == ShapeType::box) {
+					// Transform the ray into the local space (ie Paul Neale space) of the object
+					//for checker u would need to find the modelmatrix of the parent of the object
+					//it should be around the getmodelmatrix function
 					Matrix4 paulNealeToWorldSpace = transformComponent->GetTransformMatrix();
 					Matrix4 worldToPaulNealeSpace = MMath::inverse(paulNealeToWorldSpace);
 					// Transform the start of the ray
@@ -151,26 +155,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
 					}
 				}
-				if (shapeComponent->shapeType == ShapeType::cylinder) {
-					Matrix4 paulNealeToWorldSpace = transformComponent->GetTransformMatrix();
-					Matrix4 worldToPaulNealeSpace = MMath::inverse(paulNealeToWorldSpace);
-					// Transform the start of the ray
-					Vec3 rayStartPaulNealeSpace = worldToPaulNealeSpace * rayWorldSpace.start;
-					// Transform the direction of the ray
-					// Be careful, we don't want to translate the direction. 
-					// Only rotate using quaternion
-					Quaternion paulNealeToWorldSpaceRotation = transformComponent->GetOrientation();
-					Quaternion worlToPaulNealeSpaceRotation = QMath::conjugate(paulNealeToWorldSpaceRotation);
-					Vec3 rayDirPaulNealeSpace = QMath::rotate(rayWorldSpace.dir, worlToPaulNealeSpaceRotation);
-					GEOMETRY::Ray rayPaulNealeSpace(rayStartPaulNealeSpace, rayDirPaulNealeSpace);
-					// Shoot the ray at the sphere
-					rayInfo = shapeComponent->shape->rayIntersectionInfo(rayPaulNealeSpace);
-					if (rayInfo.isIntersected) {
-						std::cout << "You picked: " << it->first << '\n';
-						pickedActor = actor; // make a member variable called pickedActor. Will come in handy later…
-						haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
-					}
-				}
+				
 			}
 			break;
 		}

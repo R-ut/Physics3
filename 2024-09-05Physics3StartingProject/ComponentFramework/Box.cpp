@@ -1,6 +1,10 @@
 #include "Box.h"
+#include <array>
 using namespace MATH;
 using namespace GEOMETRY;
+
+
+
 void Box::generateVerticesAndNormals()
 {
 	//create triangles for the box with the half extents and the centre.
@@ -148,5 +152,77 @@ void Box::generateVerticesAndNormals()
 
 RayIntersectionInfo Box::rayIntersectionInfo(const Ray& ray) const
 {
-	return RayIntersectionInfo();
+
+	std::array<slab, 3> slabs;
+	slabs[0].normal = QMath::rotate(Vec3(1.0f, 0.0f, 0.0f), orientation);
+	//assume the box is centered around (0,0,0)
+	slabs[0].distFar = halfExtents.x + centre.x;
+	slabs[0].distNear = -(halfExtents.x  + centre.x);
+
+	slabs[1].normal = QMath::rotate(Vec3(0.0f, 1.0f, 0.0f), orientation);
+	//assume the box is centered around (0,0,0)
+	slabs[1].distFar = halfExtents.y + centre.y;
+	slabs[1].distNear = -(centre.y + halfExtents.y);
+
+	slabs[2].normal = QMath::rotate(Vec3(0.0f, 0.0f, 1.0f), orientation);;
+	//assume the box is centered around (0,0,0)
+	slabs[2].distFar = centre.z + halfExtents.z;
+	slabs[2].distNear = -(centre.z + halfExtents.z);
+
+	// Start of with the smallest and biggest possible values for the ray’s t value 
+	float tmin = 0.0f;
+	float tmax = FLT_MAX;
+	float tNear = 0.0f, tFar = 0.0f;
+	// Loop over the 3 slabs of the box along the x, y, and z axes 
+	for (int i = 0; i < 3; i++) {
+		if (ray.dir[i] != 0.0) {
+			// Check intersection with the near plane. Do a ray-plane check for this
+			//particular axis
+			// Can follow Umer's scribbles on the board
+			// t = (d - ray.start.x) / ray.dir.x 
+			// t1 = (slabs[i].dNear - ray.start[i]) / ray.dir.[i] 
+			float t1 = (slabs[i].distNear - ray.start[i]) / ray.dir[i];
+			// Check intersection with the far plane. Do another ray-plane check
+			float t2 = (slabs[i].distFar - ray.start[i]) / ray.dir[i];
+			if (t1 > t2) {
+				// Set tNear to be the smaller of the two t values
+				tNear = t2;
+				// Set tFar to be the larger of the two t values
+				tFar = t1;
+			}
+			else {
+				// Set tNear to be the smaller of the two t values
+				tNear = t1;
+				// Set tFar to be the larger of the two t values
+				tFar = t2;
+			}
+			if (tmin < tNear) {
+				// Update tmin so that it is the largest tNear value found so far
+				tmin = tNear;
+			}
+			if (tmax > tFar) {
+				// Update tmax so that it is the smallest tFar value found so far
+				tmax = tFar;
+			}
+		}
+		
+	}
+	if (tmin > tmax) {
+		// If tmin is greater than tmax, then we didn't intersect the box, get outta
+		//here
+		return RayIntersectionInfo();
+	}
+	// If we made it this far, we have a valid intersection
+	RayIntersectionInfo rayInfo;
+	rayInfo.isIntersected = true;
+	rayInfo.t = tmin;
+	rayInfo.intersectionPoint = ray.currentPosition(rayInfo.t);
+	return rayInfo;
+	//todo
+	//think abt the edge cases
+	//what if the box is not centred at origin
+	//what if the box is rotated
+	//what if the ray dir has a zero?
+	//like (1,0,0)
+
 }

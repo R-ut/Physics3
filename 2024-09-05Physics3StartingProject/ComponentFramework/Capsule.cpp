@@ -1,7 +1,8 @@
 #include "Capsule.h"
 #include <MMath.h>
 #include <Vector.h>
-
+#include "Cylinder.h"
+#include "Sphere.h"
 using namespace MATH;
 using namespace GEOMETRY;
 
@@ -73,5 +74,43 @@ void Capsule::generateVerticesAndNormals() {
 
 RayIntersectionInfo Capsule::rayIntersectionInfo(const Ray& ray) const
 {
+	//ToDo
+	//Reuse the ray cylinder and ray sphere code
+	//first intersect with infintely long cylinder. 
+	Cylinder cylinder(r, sphereCentrePosA, sphereCentrePosB);
+	//Use a checkInfinityCylinder method 
+	RayIntersectionInfo rayInfo;
+	// rayInfo = infyLongCylinder.checkInfiniteCylinder(ray);
+	// 
+	// If there are no intersection with an infinitely long cylinder. 
+	// Just get outta here
+	if (!rayInfo.isIntersected)
+	{
+		return rayInfo; // return and get outta here
+	}
+	// If we are still here, we have at least intersected with an infy long cylinder
+	// Check the end spheres
+	// We are outside end sphere centre A if....
+	Vec3 AB = sphereCentrePosB - sphereCentrePosA;
+	Vec3 P = rayInfo.intersectionPoint;
+	Vec3 AP = P - sphereCentrePosA;
+	float ab_dot_ap = VMath::dot(AB, AP);
+	if (ab_dot_ap < 0) {
+		// We are outside sphere centre A's pos
+		//let's reuse our sphere code
+		Sphere sphereAtA(sphereCentrePosA, r);
+		RayIntersectionInfo rayInfoAtA = sphereAtA.rayIntersectionInfo(ray);
+		return rayInfoAtA;
+
+
+	}
+	// TODO FOR YOU
+//	else if (figure out what goes here for sphere centre B) {
+
+//	} else{
+	// The infinite cylinder intersection point
+	// is actually in between A & B
+	// Hooray
+	// Return the rayInfo we built on line 16/17
 	return RayIntersectionInfo();
 }
