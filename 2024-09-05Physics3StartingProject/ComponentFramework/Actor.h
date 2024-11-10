@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Component.h"
 #include <Matrix.h>
+#include <Quaternion.h>
 
 using namespace MATH;
 class Actor: public Component {
@@ -28,6 +29,7 @@ public:
 	void Update(const float deltaTime_);
 	void Render() const;
 	
+	Quaternion Orientation(); 
 	/// Footnote to those who think you can't write code in the header file - this is true
 	/// with a few exceptions. (1) You can't inline code (implicitly or not) unless it is in 
 	/// the header file and (2) templates must be in the header file
@@ -89,5 +91,6 @@ public:
 
 	// Getting the parenting thing working
 	Matrix4 GetModelMatrix();
+	
 };
 

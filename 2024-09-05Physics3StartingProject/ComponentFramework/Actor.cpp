@@ -64,3 +64,21 @@ Matrix4 Actor::GetModelMatrix()
 
 	return modelMatrix;
 }
+//Created a function to get the orientation of the actor
+Quaternion Actor::Orientation() {
+
+	Ref<TransformComponent> transform = GetComponent<TransformComponent>();
+	Quaternion orientation;
+	if (transform) {
+		orientation = transform->GetOrientation();
+	}
+	else {
+		orientation = Quaternion();
+	}
+	if (parent) {
+		orientation = dynamic_cast<Actor*>(parent)->GetComponent<TransformComponent>()->GetOrientation() * orientation;
+	}
+	return orientation;
+
+
+}

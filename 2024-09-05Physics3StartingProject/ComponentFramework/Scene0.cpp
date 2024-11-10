@@ -136,14 +136,14 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 					// Transform the ray into the local space (ie Paul Neale space) of the object
 					//for checker u would need to find the modelmatrix of the parent of the object
 					//it should be around the getmodelmatrix function
-					Matrix4 paulNealeToWorldSpace = transformComponent->GetTransformMatrix();
+					Matrix4 paulNealeToWorldSpace =   actor->GetModelMatrix() ;
 					Matrix4 worldToPaulNealeSpace = MMath::inverse(paulNealeToWorldSpace);
 					// Transform the start of the ray
 					Vec3 rayStartPaulNealeSpace = worldToPaulNealeSpace * rayWorldSpace.start;
 					// Transform the direction of the ray
 					// Be careful, we don't want to translate the direction. 
 					// Only rotate using quaternion
-					Quaternion paulNealeToWorldSpaceRotation = transformComponent->GetOrientation();
+					Quaternion paulNealeToWorldSpaceRotation =  actor->Orientation();
 					Quaternion worlToPaulNealeSpaceRotation = QMath::conjugate(paulNealeToWorldSpaceRotation);
 					Vec3 rayDirPaulNealeSpace = QMath::rotate(rayWorldSpace.dir, worlToPaulNealeSpaceRotation);
 					GEOMETRY::Ray rayPaulNealeSpace(rayStartPaulNealeSpace, rayDirPaulNealeSpace);
