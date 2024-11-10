@@ -79,7 +79,7 @@ RayIntersectionInfo Capsule::rayIntersectionInfo(const Ray& ray) const
 	//first intersect with infintely long cylinder. 
 	Cylinder cylinder(r, sphereCentrePosA, sphereCentrePosB);
 	//Use a checkInfinityCylinder method 
-	RayIntersectionInfo rayInfo;
+	RayIntersectionInfo rayInfo = cylinder.checkInfiniteCylinder(ray);
 	// rayInfo = infyLongCylinder.checkInfiniteCylinder(ray);
 	// 
 	// If there are no intersection with an infinitely long cylinder. 
@@ -95,22 +95,30 @@ RayIntersectionInfo Capsule::rayIntersectionInfo(const Ray& ray) const
 	Vec3 P = rayInfo.intersectionPoint;
 	Vec3 AP = P - sphereCentrePosA;
 	float ab_dot_ap = VMath::dot(AB, AP);
+	Vec3 BP = P - sphereCentrePosB;
+	float ab_dot_bp = VMath::dot(-AB, BP);
 	if (ab_dot_ap < 0) {
 		// We are outside sphere centre A's pos
 		//let's reuse our sphere code
 		Sphere sphereAtA(sphereCentrePosA, r);
 		RayIntersectionInfo rayInfoAtA = sphereAtA.rayIntersectionInfo(ray);
 		return rayInfoAtA;
-
-
 	}
 	// TODO FOR YOU
 //	else if (figure out what goes here for sphere centre B) {
-
+	else if (ab_dot_bp < 0) {
+		// We are outside sphere centre B's pos
+		Sphere sphereAtB(sphereCentrePosB, r);
+		RayIntersectionInfo rayInfoAtB = sphereAtB.rayIntersectionInfo(ray);
+		return rayInfoAtB;
+	}
+	else {
+		// We are inside both spheres
+		return rayInfo;
+	}
 //	} else{
 	// The infinite cylinder intersection point
 	// is actually in between A & B
 	// Hooray
 	// Return the rayInfo we built on line 16/17
-	return RayIntersectionInfo();
 }

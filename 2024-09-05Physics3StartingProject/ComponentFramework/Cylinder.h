@@ -39,6 +39,8 @@ namespace GEOMETRY {
 
 		// TODO for assignment 2:
 		RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
+		RayIntersectionInfo checkInfiniteCylinder(const Ray& ray) const;
+		RayIntersectionInfo checkEndCap(const Ray& ray, const MATH::Vec3& centrePointOnEndcap) const;
 		void generateVerticesAndNormals() override;
 
 	};
