@@ -6,6 +6,7 @@
 #include "MeshComponent.h"
 #include "ShapeComponent.h"
 #include "MaterialComponent.h"
+#include "PhysicsComponent.h"
 #include "CameraActor.h"
 #include "LightActor.h"
 #include "Sphere.h"
@@ -327,5 +328,16 @@ void XMLAssetManager::AddPhysicsToActor(const tinyxml2::XMLElement* child, Ref<A
 	// TODO for assignment 3
 	// Add a default physics component to the actor, but don't forget to match transform component's position & orientation
 	// You're gonna have to assume the transform component has already been built (fingers crossed!)
+	if (child->FirstChildElement("Physics")) {
+		Ref<TransformComponent> transformComponent = actor->GetComponent<TransformComponent>();
+#ifdef _DEBUG 
+			if (transformComponent.get() == nullptr) {
+				std::string errorMsg = __FILE__ + __LINE__;
+				throw errorMsg.append(": You need a transform first, silly! ");
+			}
+#endif
+			actor->AddComponent<PhysicsComponent>(parent, transformComponent->pos, transformComponent->orientation);
+			actor->OnCreate();
+	}
 }
 

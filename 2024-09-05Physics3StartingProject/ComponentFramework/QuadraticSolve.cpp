@@ -6,9 +6,10 @@ using namespace std;
 QuadraticSolve GEOMETRY::solveQuadratic(float a, float b, float c)
 {
     QuadraticSolve result;
-    float discriminant = b * b - 4 * a * c;
+    float discriminant = (b * b )- (4 * a * c);
     if (discriminant < 0)
     {
+        result.numSolutions = NumSolutions::zero;
         return result;
     }
 
@@ -20,7 +21,6 @@ QuadraticSolve GEOMETRY::solveQuadratic(float a, float b, float c)
         //Rut choses the second soln to be -b/2a
 		result.numSolutions = NumSolutions::one;
 		result.firstSolution = -b / (2 * a);
-        result.secondSolution = -b / (2 * a);
 
         return result;
     }
@@ -30,8 +30,12 @@ QuadraticSolve GEOMETRY::solveQuadratic(float a, float b, float c)
 	//and set first sol to be (-b + sqrt(discriminant)) / (2a)
 	//and second sol to be (-b - sqrt(discriminant)) / (2a)
     result.numSolutions = NumSolutions::two;
-	result.firstSolution = (-b + sqrt(discriminant)) / (2 * a);
-	result.secondSolution = (-b - sqrt(discriminant)) / (2 * a);
+	result.firstSolution = (-b - sqrt(discriminant)) / (2 * a);
+	result.secondSolution = (-b + sqrt(discriminant)) / (2 * a);
+    if (result.firstSolution == result.secondSolution)
+    {
+        std::swap(result.firstSolution, result.secondSolution);
+    }
     return result;
 }
 

@@ -1,4 +1,5 @@
 #include "PhysicsComponent.h"
+#include "TransformComponent.h"
 
 PhysicsComponent::PhysicsComponent(Component* parent_) : Component(parent_)
 {
@@ -11,7 +12,8 @@ PhysicsComponent::PhysicsComponent(Component* parent_, Vec3 pos_, Quaternion ori
 
 bool PhysicsComponent::OnCreate()
 {
-	return false;
+	isCreated = true;
+	return true;
 }
 
 void PhysicsComponent::OnDestroy()

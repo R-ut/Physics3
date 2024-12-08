@@ -12,8 +12,9 @@
 #include "ShaderComponent.h"
 #include "MeshComponent.h"
 #include "ShapeComponent.h"
+#include "PhysicsComponent.h"
 #include "Ray.h"
-
+#include "PhysicsSystem.h"
 bool Scene0::OnCreate()
 {
 	XMLAssetManager assetManager;
@@ -21,6 +22,8 @@ bool Scene0::OnCreate()
 	std::vector<std::string> names{
 		"ActorGameBoard" , "ActorChecker1", "ActorChecker2",
 		"ActorSkull", "ActorCube", "ActorMario"
+		
+		
 	};
 	for (const auto& name : names) {
 		auto asset = assetManager.xmlAssets.find(name);
@@ -153,6 +156,12 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						std::cout << "You picked: " << it->first << '\n';
 						pickedActor = actor; // make a member variable called pickedActor. Will come in handy later…
 						haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
+						//Todo 
+						//Find the mouse pos in world space based on the ray intersection
+						//mousePosWorld = .....
+						
+
+						intersectionPoint = transformComponent->GetTransformMatrix() * rayInfo.intersectionPoint;
 					}
 				}
 				
@@ -167,6 +176,31 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 
 void Scene0::Update(const float deltaTime)
 {
+	if (haveClickedOnSomething) {
+		Ref<PhysicsComponent> physicsComponent = pickedActor->GetComponent<PhysicsComponent>();
+		Vec3 gravityAccel(0.0f, -9.8f, 0.0f);
+		Vec3 gravityForce = physicsComponent->mass * gravityAccel;
+		//drag = -c * vel
+		float dragCoeff = 0.25f;
+		Vec3 dragForce = physicsComponent->vel * -(dragCoeff);
+		Vec3 netForce = gravityForce + dragForce;
+
+		//Write all this functions.
+		PhysicsSystem::ApplyForce(physicsComponent,netForce);
+		PhysicsSystem::UpdateVel(physicsComponent, deltaTime); 
+		
+
+		/*float slope = 1.0f;
+		float yIntercept = 1.0f;
+		PhysicsSystem::StraightLineConstant(physicsComponent, slope, yIntercept, deltaTime);*/
+		
+		PhysicsSystem::MouseConstraint(physicsComponent, intersectionPoint, deltaTime);
+		PhysicsSystem::UpdatePos(physicsComponent, deltaTime);
+		PhysicsSystem::UpdateOrientation(physicsComponent, deltaTime);
+		//Make sure transform matches physics
+		PhysicsSystem::UpdateTransform(pickedActor);
+		
+	}
 }
 
 void Scene0::Render() const

@@ -37,6 +37,7 @@ ShapeComponent::~ShapeComponent()
 
 bool ShapeComponent::OnCreate()
 {
+	isCreated = true;
 	return true;
 }
 

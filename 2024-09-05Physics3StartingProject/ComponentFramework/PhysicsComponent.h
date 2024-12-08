@@ -2,7 +2,7 @@
 #include "Component.h"
 #include <Quaternion.h>
 using namespace MATH;
-class PhysicsComponent :
+struct PhysicsComponent :
     public Component
 {
 	float mass = 1.0f;
